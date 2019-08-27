@@ -1,14 +1,17 @@
 /**
  * 
  */
-package com.luchoct.basket.service.discount;
+package com.shobhana.basket.service.discount;
 
-import com.luchoct.basket.dto.CatalogItem;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+
+import com.shobhana.basket.dto.CatalogItem;
 
 /**
- * @author Luis
+ * @author shobhana
  *
  */
 public interface IDiscount {
@@ -30,6 +33,6 @@ public interface IDiscount {
 	 * @param basket List of items.
 	 * @return the amount to discount.
 	 */
-	public float getValue(List<CatalogItem> basket);
+	public float getValue(List<CatalogItem> basket,LocalDate date,Map<String,Integer> shoppingCart);
 	
 }

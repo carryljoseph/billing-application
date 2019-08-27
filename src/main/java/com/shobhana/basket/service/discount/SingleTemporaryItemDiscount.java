@@ -1,21 +1,26 @@
 /**
  * 
  */
-package com.luchoct.basket.service.discount;
+package com.shobhana.basket.service.discount;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.luchoct.basket.dto.CatalogItem;
+import org.apache.log4j.Logger;
+
+import com.shobhana.basket.dto.CatalogItem;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
-import org.apache.log4j.Logger;
 
 /**
  * A discount applicable to all items with the same id, during a period.
- * @author Luis
+ * @author shobhana
  * 
  */
 @Data
@@ -67,16 +72,17 @@ public class SingleTemporaryItemDiscount implements IDiscount {
 	/**
 	 * {@inheritDoc}
 	 */
-	public float getValue(List<CatalogItem> basket) {
-		Date currentDate = new Date();
-		if (initDate.getTime() <= currentDate.getTime()
-				&& currentDate.getTime() <= endDate.getTime()) {
+	public float getValue(List<CatalogItem> basket,LocalDate currentDate,Map<String,Integer> shoppingCart) {
+		LocalDate initialDate = initDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate finalDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		if (initialDate.isBefore(currentDate)
+				&& finalDate.isAfter(currentDate)) {
 			List<CatalogItem> itemsToDiscount = basket.stream()
 					.filter(itemToCheck -> itemToCheck.equals(item))
 					.collect(Collectors.toList());
 
 			float discount = (float) itemsToDiscount.stream()
-					.mapToDouble(item -> item.getPrice() * percentage / 100)
+					.mapToDouble(item -> (item.getPrice()*shoppingCart.get(item.getId())) * percentage / 100)
 					.sum();
 
 			if (logger.isDebugEnabled()) {

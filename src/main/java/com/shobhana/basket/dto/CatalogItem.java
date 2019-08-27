@@ -1,16 +1,18 @@
 /**
  * 
  */
-package com.luchoct.basket.dto;
+package com.shobhana.basket.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 
 /**
  * An item from the catalog.
- * @author Luis
+ * @author shobhana
  * 
  */
 @Data
@@ -36,4 +38,5 @@ public class CatalogItem {
 	 * Price of the container for the item.
 	 */
 	private float price;
+	
 }

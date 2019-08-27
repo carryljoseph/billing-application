@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.luchoct.basket.service;
+package com.shobhana.basket.service;
 
 import java.util.List;
 
 /**
  * An exception over some items.
- * @author Luis
+ * @author shobhana
  *
  */
 public class ItemsException extends Exception {

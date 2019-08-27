@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.luchoct.basket.test;
+package com.shobhana.basket.test;
 
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
- * @author Luis
+ * @author shobhana
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)

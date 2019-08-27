@@ -6,7 +6,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Apple Discount with extended date -->
 	<bean name="applesDiscount"
-		  class="com.luchoct.basket.service.discount.SingleTemporaryItemDiscount">
+		  class="com.shobhana.basket.service.discount.SingleTemporaryItemDiscount">
 		<property name="item" ref="apple" />
 		<property name="percentage" value="10" />
 		<property name="description"
@@ -14,12 +14,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="ticketDescription" value="Apples 10% off" />
 		<property name="initDate">
 			<bean factory-bean="dateFormat" factory-method="parse">
-				<constructor-arg value="2010-01-01" />
+				<constructor-arg value="2019-08-31" />
 			</bean>
 		</property>
 		<property name="endDate">
 			<bean factory-bean="dateFormat" factory-method="parse">
-				<constructor-arg value="2032-01-01" />
+				<constructor-arg value="2019-09-31" />
 			</bean>
 		</property>
 	</bean>

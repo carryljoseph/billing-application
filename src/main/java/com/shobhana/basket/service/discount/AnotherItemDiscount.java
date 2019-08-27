@@ -1,16 +1,22 @@
 /**
  * 
  */
-package com.luchoct.basket.service.discount;
+package com.shobhana.basket.service.discount;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.luchoct.basket.dto.CatalogItem;
+import org.apache.log4j.Logger;
+
+import com.shobhana.basket.dto.CatalogItem;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
-import org.apache.log4j.Logger;
 
 /**
  * A discount that is applied only when a specific number of containers of an
@@ -18,7 +24,7 @@ import org.apache.log4j.Logger;
  * price of another container of another item.
  * Every n-containers of one item you buy, you have right to have a discount over
  * 1 container of another item.
- * @author Luis
+ * @author shobhana
  * 
  */
 @Data
@@ -50,6 +56,16 @@ public class AnotherItemDiscount implements IDiscount {
 	 * The item to which applying the discount over.
 	 */
 	private CatalogItem itemDiscounted;
+	
+	/**
+	 * The init date of the application of the discount
+	 */
+	private Date initDate;
+
+	/**
+	 * The finish date of the application of the discount
+	 */
+	private Date endDate;
 
 	/**
 	 * The percentage of discount to apply.
@@ -66,17 +82,26 @@ public class AnotherItemDiscount implements IDiscount {
 		assert ((percentage >= 0) && (percentage <= 100));
 	}
 
-	private long getTimesToApply(List<CatalogItem> basket) {
-		long numItemsFound = basket.stream().filter(item -> item.equals(itemRequired)).count();
+	private long getTimesToApply(Map<String,Integer> shoppingCart) {
+		long numItemsFound;
+		if(shoppingCart.get(itemRequired.getId()) != null) {
+			 numItemsFound = shoppingCart.get(itemRequired.getId());
+		}else {
+			numItemsFound = 0;
+		}
 		return numItemsFound / numItemsRequired;
 	}
 
 	@Override
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc}Date
 	 */
-	public float getValue(List<CatalogItem> basket) {
-		long numTimesDiscount = getTimesToApply(basket);
+	public float getValue(List<CatalogItem> basket,LocalDate currentDate,Map<String,Integer> shoppingCart) {
+		LocalDate initialDate = initDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate finalDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		if (initialDate.isBefore(currentDate)
+				&& finalDate.isAfter(currentDate)) {
+		long numTimesDiscount = getTimesToApply(shoppingCart);
 
 		List<CatalogItem> itemsToDiscount = basket.stream()
 				.filter(item -> item.equals(itemDiscounted))
@@ -91,6 +116,7 @@ public class AnotherItemDiscount implements IDiscount {
 					+ discount);
 		}
 		return discount;
+		} else return (float)0.0;
 	}
 
 }
